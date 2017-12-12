@@ -1,9 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models;
 
 class User extends Authenticatable
 {
@@ -15,7 +16,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'address', 'phone_number', 'is_admin'
+    ];
+
+    protected $dates = [
+        'birthdate', 'created_at', 'updated_at'
     ];
 
     /**
@@ -24,6 +29,29 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token'
     ];
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
+
+    /**
+     * Get the reviews for the user.
+     */
+    public function reviews()
+    {
+        return $this->hasMany('Review');
+    }
+
+    /**
+     * Get the articles for the user.
+     */
+    public function articles()
+    {
+        return $this->hasMany('Article');
+    }
 }
