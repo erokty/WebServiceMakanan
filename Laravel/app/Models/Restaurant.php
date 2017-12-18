@@ -32,6 +32,14 @@ class Restaurant extends Model
      */
     public function menus()
     {
-        return $this->hasMany('Menu');
+        return $this->hasMany('App\Models\Menu');
+    }
+
+    /**
+     * Get the reviews for the restaurant.
+     */
+    public function reviews()
+    {
+        return $this->hasMany('App\Models\Review');
     }
 }

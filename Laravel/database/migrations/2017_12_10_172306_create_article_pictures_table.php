@@ -15,7 +15,7 @@ class CreateArticlePicturesTable extends Migration
     {
         Schema::create('article_pictures', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('url', 45);
+            $table->string('file_name', 150);
             $table->integer('article_id')->unsigned();
             $table->foreign('article_id')->references('id')->on('articles');
             $table->timestamps();

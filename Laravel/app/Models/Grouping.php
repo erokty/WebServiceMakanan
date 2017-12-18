@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models;
 
 class Grouping extends Model
 {
@@ -31,6 +32,6 @@ class Grouping extends Model
      */
     public function menus()
     {
-        return $this->belongsToMany('Menu');
+        return $this->belongsToMany('App\Models\Menu', 'menu_grouping', 'grouping_id', 'menu_id');
     }
 }

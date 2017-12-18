@@ -44,7 +44,7 @@ class User extends Authenticatable
      */
     public function reviews()
     {
-        return $this->hasMany('Review');
+        return $this->hasMany('App\Models\Review');
     }
 
     /**
@@ -52,6 +52,6 @@ class User extends Authenticatable
      */
     public function articles()
     {
-        return $this->hasMany('Article');
+        return $this->hasMany('App\Models\Article');
     }
 }

@@ -13,7 +13,7 @@ class Article extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'user_id', 'file_name'
+        'title', 'content', 'user_id'
     ];
 
     protected $dates = [
@@ -41,7 +41,7 @@ class Article extends Model
      */
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('App\Models\User');
     }
 
     /**
@@ -49,6 +49,6 @@ class Article extends Model
      */
     public function articlePics()
     {
-        return $this->hasMany('ArticlePicture');
+        return $this->hasMany('App\Models\ArticlePicture');
     }
 }

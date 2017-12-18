@@ -7,8 +7,6 @@ use App\Models;
 
 class Menu extends Model
 {
-  use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -43,7 +41,7 @@ class Menu extends Model
      */
     public function restaurant()
     {
-        return $this->belongsTo('Restaurant');
+        return $this->belongsTo('App\Models\Restaurant');
     }
 
     /**
@@ -51,6 +49,6 @@ class Menu extends Model
      */
     public function groupings()
     {
-        return $this->belongsToMany('Grouping');
+        return $this->belongsToMany('App\Models\Grouping', 'menu_grouping', 'menu_id', 'grouping_id');
     }
 }

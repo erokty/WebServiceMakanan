@@ -7,8 +7,6 @@ use App\Models;
 
 class Review extends Model
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -43,6 +41,13 @@ class Review extends Model
      */
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('App\Models\User');
+    }
+    /**
+     * Get the restaurant that owns the review.
+     */
+    public function restaurant()
+    {
+        return $this->belongsTo('App\Models\Restaurant');
     }
 }

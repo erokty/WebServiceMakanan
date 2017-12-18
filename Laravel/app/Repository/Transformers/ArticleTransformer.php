@@ -8,7 +8,6 @@ class ArticleTransformer extends Transformer{
             'id' => $article->id,
             'title' => $article->title,
             'content' => $article->content,
-            'file_name' => $article->file_name,
             'user_id' => $article->user_id,
         ];
     }

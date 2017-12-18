@@ -20,7 +20,9 @@ class ArticleController extends ApiController
      * */
     protected $articleTransformer;
 
-    public function __construct(articleTransformer $articleTransformer)
+    public function __construct(
+        articleTransformer $articleTransformer
+    )
     {
         $this->articleTransformer = $articleTransformer;
     }
@@ -36,20 +38,16 @@ class ArticleController extends ApiController
         $rules = array (
             'title' => 'required|max:20',
             'content' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         );
         $validator = Validator::make($request->all(), $rules);
         if ($validator-> fails()){
             return $this->respondValidationError('Fields Validation Failed.', $validator->errors());
         }
         else{
-            $fileName = $this->uploadFileToStorage($request);
-
             $article = Article::create([
                 'title' => $request['title'],
                 'content' => $request['content'],
                 'user_id' => Auth::user()->id,
-                'file_name' => $fileName
             ]);
 
             return $this->respond([

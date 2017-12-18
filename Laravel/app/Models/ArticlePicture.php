@@ -7,15 +7,13 @@ use App\Models;
 
 class ArticlePicture extends Model
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'url', 'article_id'
+        'file_name', 'article_id'
     ];
 
     protected $dates = [
@@ -43,6 +41,6 @@ class ArticlePicture extends Model
      */
     public function article()
     {
-        return $this->belongsTo('Article');
+        return $this->belongsTo('App\Models\Article');
     }
 }
