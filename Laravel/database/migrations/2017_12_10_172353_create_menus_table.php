@@ -17,8 +17,8 @@ class CreateMenusTable extends Migration
             $table->increments('id');
             $table->string('name', 50);
             $table->integer('price');
-            $table->integer('retaurant_id')->unsigned();
-            $table->foreign('retaurant_id')->references('id')->on('restaurants');
+            $table->integer('restaurant_id')->unsigned();
+            $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->timestamps();
         });
     }

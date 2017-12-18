@@ -7,15 +7,13 @@ use App\Models;
 
 class Article extends Model
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'user_id'
+        'title', 'content', 'user_id', 'file_name'
     ];
 
     protected $dates = [

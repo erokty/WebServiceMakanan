@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Response;
 use Illuminate\Http\Response as Res;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 /**
  * Class ApiController
@@ -42,7 +44,8 @@ class ApiController extends Controller
         return $this;
     }
 
-    public function respondCreated($message, $data=null){
+    public function respondCreated($message, $data=null)
+    {
         return $this->respond([
             'status' => 'success',
             'status_code' => Res::HTTP_CREATED,
@@ -56,7 +59,8 @@ class ApiController extends Controller
      * @param $data
      * @return mixed
      */
-    protected function respondWithPagination(Paginator $paginate, $data, $message){
+    protected function respondWithPagination(Paginator $paginate, $data, $message)
+    {
         $data = array_merge($data, [
             'paginator' => [
                 'total_count'  => $paginate->total(),
@@ -73,7 +77,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function respondNotFound($message = 'Not Found!'){
+    public function respondNotFound($message = 'Not Found!')
+    {
         return $this->respond([
             'status' => 'error',
             'status_code' => Res::HTTP_NOT_FOUND,
@@ -81,7 +86,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function respondInternalError($message){
+    public function respondInternalError($message)
+    {
         return $this->respond([
             'status' => 'error',
             'status_code' => Res::HTTP_INTERNAL_SERVER_ERROR,
@@ -89,7 +95,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function respondValidationError($message, $errors){
+    public function respondValidationError($message, $errors)
+    {
         return $this->respond([
             'status' => 'error',
             'status_code' => Res::HTTP_UNPROCESSABLE_ENTITY,
@@ -98,15 +105,31 @@ class ApiController extends Controller
         ]);
     }
 
-    public function respond($data, $headers = []){
+    public function respond($data, $headers = [])
+    {
         return Response::json($data, $this->getStatusCode(), $headers);
     }
 
-    public function respondWithError($message){
+    public function respondWithError($message)
+    {
         return $this->respond([
             'status' => 'error',
             'status_code' => Res::HTTP_UNAUTHORIZED,
             'message' => $message,
         ]);
+    }
+
+    public function uploadFileToStorage($request)
+    {
+        $file = $request->file('image');
+        if ($file == null) {
+            return "";
+        }
+
+        $extension = $file->getClientOriginalExtension();
+        
+        Storage::disk('local')->put($file->getFilename().'.'.$extension,  File::get($file));
+        
+        return $file->getFilename().'.'.$extension;
     }
 }

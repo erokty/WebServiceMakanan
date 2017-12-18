@@ -8,7 +8,7 @@ abstract class Transformer {
      * @param $lessons
      * @return array
      */
-    public function transformCollection(array $items){
+    public function transformArray(array $items){
         return array_map([$this, 'transform'], $items);
     }
     public abstract function transform($item);

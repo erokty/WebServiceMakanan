@@ -7,15 +7,13 @@ use App\Models;
 
 class Restaurant extends Model
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'image_url'
+        'name', 'description', 'file_name'
     ];
 
     protected $dates = [

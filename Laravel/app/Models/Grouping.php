@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Grouping extends Model
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
