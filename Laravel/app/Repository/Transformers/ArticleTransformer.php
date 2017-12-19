@@ -9,6 +9,7 @@ class ArticleTransformer extends Transformer{
             'title' => $article->title,
             'content' => $article->content,
             'user_id' => $article->user_id,
+            'user' => $article->user()->get(),
         ];
     }
 }

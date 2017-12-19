@@ -115,7 +115,7 @@ class UserController extends ApiController
                 'address' => $request['address'],
                 'birthdate' => Carbon::createFromFormat('d-m-Y', $request['birthdate']),
                 'phone_number' => $request['phone_number'],
-                'is_admin' => false,
+                'is_admin' => true,
 
             ]);
             return $this->_login($request['email'], $request['password']);

@@ -12,6 +12,7 @@ use App\Repository\Transformers\ArticleTransformer;
 use \Illuminate\Http\Response as Res;
 use Validator;
 use App\Models\Article;
+use App\User;
 
 class ArticleController extends ApiController
 {
@@ -47,8 +48,11 @@ class ArticleController extends ApiController
             $article = Article::create([
                 'title' => $request['title'],
                 'content' => $request['content'],
-                'user_id' => Auth::user()->id,
             ]);
+
+            $user = User::findOrFail(Auth::user()->id);
+            $article->user()->associate($user);
+            $article->save();
 
             return $this->respond([
                 'status' => 'success',
@@ -68,7 +72,11 @@ class ArticleController extends ApiController
     public function get(string $id = null)
     {
         if (!$id) {
-            $articles = Article::all();
+            if (Auth::user()->is_admin) {
+                $articles = Article::all()->get();
+            } else {
+                $articles = Article::where('user_id', Auth::user()->id)->get();
+            }
             $transformedArticles = Collection::make(new Article());
 
             foreach ($articles as $article) {
