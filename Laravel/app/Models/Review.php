@@ -41,7 +41,7 @@ class Review extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\User');
     }
     /**
      * Get the restaurant that owns the review.

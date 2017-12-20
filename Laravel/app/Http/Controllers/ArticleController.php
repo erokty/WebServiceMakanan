@@ -73,31 +73,25 @@ class ArticleController extends ApiController
     {
         if (!$id) {
             if (Auth::user()->is_admin) {
-                $articles = Article::all()->get();
+                $articles = Article::with('user')->paginate(10);
             } else {
-                $articles = Article::where('user_id', Auth::user()->id)->get();
-            }
-            $transformedArticles = Collection::make(new Article());
-
-            foreach ($articles as $article) {
-                $transformedArticle = $this->articleTransformer->transform($article);
-                $transformedArticles->push($transformedArticle);
+                $articles = Article::where('user_id', Auth::user()->id)->with('user')->paginate(10);
             }
 
             return $this->respond([
                 'status' => 'success',
                 'status_code' => $this->getStatusCode(),
                 'message' => 'Get Articles success!',
-                'data' => $transformedArticles
+                'data' => $articles
             ]);
         }
 
-        $article = Article::findOrFail($id);
+        $article = Article::findOrFail($id)->with('user');
         return $this->respond([
                 'status' => 'success',
                 'status_code' => $this->getStatusCode(),
                 'message' => 'Get Article success!',
-                'data' => $this->articleTransformer->transform($article)
+                'data' => $article
             ]);
     }
 

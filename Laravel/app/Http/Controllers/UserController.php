@@ -12,6 +12,7 @@ use \Illuminate\Http\Response as Res;
 use Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends ApiController
 {
@@ -125,7 +126,7 @@ class UserController extends ApiController
     /**
      * @description: Api user logout method
      * @author: Adelekan David Aderemi
-     * @param: null
+     * @param: api_token
      * @return: Json String response
      */
     public function logout($api_token)
@@ -145,5 +146,59 @@ class UserController extends ApiController
         }catch(JWTException $e){
             return $this->respondInternalError("An error occurred while performing an action!");
         }
+    }
+
+    /**
+     * @description: Api get current user method
+     * @author: Jordy Julianto
+     * @param: null
+     * @return: Json String response
+     */
+    public function getCurrentUser()
+    {
+        $user = Auth::user();
+        return $this->respond([
+            'status' => 'success',
+            'status_code' => $this->getStatusCode(),
+            'message' => 'Get Current User successful!',
+            'data' => $this->userTransformer->transform($user)
+        ]);
+    }
+
+    /**
+     * @description: Api get users method
+     * @author: Jordy Julianto
+     * @param: null
+     * @return: Json String response
+     */
+    public function getUsers()
+    {
+        $users = User::paginate(10);
+
+        return $this->respond([
+            'status' => 'success',
+            'status_code' => $this->getStatusCode(),
+            'message' => 'Get Current User successful!',
+            'data' => $users
+        ]);
+    }
+
+    /**
+     * @description: Api Delete User by id method
+     * @author: Jordy Julianto
+     * @param: id
+     * @return: Json String response
+     */
+    public function destroy(string $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->delete();
+
+        return $this->respond([
+            'status' => 'success',
+            'status_code' => $this->getStatusCode(),
+            'message' => 'User deleted successful!'
+        ]);
     }
 }

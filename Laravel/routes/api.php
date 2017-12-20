@@ -22,6 +22,12 @@ Route::group(['middleware' => 'cors', 'prefix' => '/v1'], function () {
     Route::post('/register', 'UserController@register')->name('user.register');
     Route::get('/logout/{api_token}', 'UserController@logout')->name('user.logout');
 
+    Route::group(['middleware' => 'auth:api'], function () {
+      Route::get('/getCurrentUser', 'UserController@getCurrentUser')->name('user.getCurrentUser');
+      Route::get('/getUsers', 'UserController@getUsers')->name('user.getUsers');
+      Route::get('/user/destroy/{id}', 'UserController@destroy')->name('user.destroy');
+    });
+
     Route::group(['middleware' => 'auth:api', 'prefix' => '/article'], function () {
       Route::post('/create', 'ArticleController@create')->name('article.create');
       Route::get('/get', 'ArticleController@get')->name('article.get');
@@ -69,7 +75,7 @@ Route::group(['middleware' => 'cors', 'prefix' => '/v1'], function () {
       Route::get('/destroy/{id}', 'ReviewController@destroy')->name('review.destroy');
     });
 
-    Route::group(['middleware' => 'auth:api', 'prefix' => '/file'], function () {
+    Route::group(['middleware' => 'cors', 'prefix' => '/file'], function () {
       Route::get('/download/{filename}', 'FileController@download')->name('file.download');
     });
 

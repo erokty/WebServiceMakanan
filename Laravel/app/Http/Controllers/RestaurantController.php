@@ -36,7 +36,7 @@ class RestaurantController extends ApiController
         $rules = array (
             'name' => 'required|max:45',
             'description' => 'required|max:255',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
         );
         $validator = Validator::make($request->all(), $rules);
         if ($validator-> fails()){
@@ -51,6 +51,7 @@ class RestaurantController extends ApiController
                 'file_name' => $fileName,
 
             ]);
+
             return $this->respond([
                 'status' => 'success',
                 'status_code' => $this->getStatusCode(),
@@ -69,19 +70,19 @@ class RestaurantController extends ApiController
     public function get(string $id = null)
     {
         if (!$id) {
-            $restaurants = Restaurant::all();
-            $transformedRestaurants = Collection::make(new Restaurant());
+            $restaurants = Restaurant::paginate(10);
+            // $transformedRestaurants = Collection::make(new Restaurant());
 
-            foreach ($restaurants as $restaurant) {
-                $transformedRestaurant = $this->restaurantTransformer->transform($restaurant);
-                $transformedRestaurants->push($transformedRestaurant);
-            }
+            // foreach ($restaurants as $restaurant) {
+            //     $transformedRestaurant = $this->restaurantTransformer->transform($restaurant);
+            //     $transformedRestaurants->push($transformedRestaurant);
+            // }
 
             return $this->respond([
                 'status' => 'success',
                 'status_code' => $this->getStatusCode(),
                 'message' => 'Get Restaurants success!',
-                'data' => $transformedRestaurants
+                'data' => $restaurants
             ]);
         }
 
@@ -90,7 +91,7 @@ class RestaurantController extends ApiController
                 'status' => 'success',
                 'status_code' => $this->getStatusCode(),
                 'message' => 'Get Restaurant success!',
-                'data' => $this->restaurantTransformer->transform($restaurant)
+                'data' => $restaurant
             ]);
     }
 

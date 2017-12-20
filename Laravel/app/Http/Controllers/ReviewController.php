@@ -74,28 +74,26 @@ class ReviewController extends ApiController
     public function get(string $id = null)
     {
         if (!$id) {
-            $reviews = Review::all();
-            $transformedReviews = Collection::make(new Review());
-
-            foreach ($reviews as $review) {
-                $transformedReview = $this->reviewTransformer->transform($review);
-                $transformedReviews->push($transformedReview);
+            if (Auth::user()->is_admin) {
+                $reviews = Review::with('restaurant')->with('user')->paginate(10);
+            } else {
+                $reviews = Review::where('user_id', Auth::user()->id)->with('user')->with('restaurant')->paginate(10);
             }
 
             return $this->respond([
                 'status' => 'success',
                 'status_code' => $this->getStatusCode(),
                 'message' => 'Get Reviews success!',
-                'data' => $transformedReviews
+                'data' => $reviews
             ]);
         }
 
-        $review = Review::findOrFail($id);
+        $review = Review::findOrFail($id)->with('user')->with('restaurant');
         return $this->respond([
                 'status' => 'success',
                 'status_code' => $this->getStatusCode(),
                 'message' => 'Get Review success!',
-                'data' => $this->reviewTransformer->transform($review)
+                'data' => $review
             ]);
     }
 
