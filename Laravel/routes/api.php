@@ -26,6 +26,7 @@ Route::group(['middleware' => 'cors', 'prefix' => '/v1'], function () {
       Route::get('/getCurrentUser', 'UserController@getCurrentUser')->name('user.getCurrentUser');
       Route::get('/getUsers', 'UserController@getUsers')->name('user.getUsers');
       Route::get('/user/destroy/{id}', 'UserController@destroy')->name('user.destroy');
+      Route::get('/browse/{selected}/{browsed}', 'UserController@browse')->name('user.browse');
     });
 
     Route::group(['middleware' => 'auth:api', 'prefix' => '/article'], function () {

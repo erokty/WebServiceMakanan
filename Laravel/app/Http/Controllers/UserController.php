@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Models\Restaurant;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use JWTAuth;
@@ -199,6 +201,39 @@ class UserController extends ApiController
             'status' => 'success',
             'status_code' => $this->getStatusCode(),
             'message' => 'User deleted successful!'
+        ]);
+    }
+
+    /**
+     * @description: Api Browse Restaurant or Menu by value method
+     * @author: Jordy Julianto
+     * @param: browsed
+     * @return: Json String response
+     */
+    public function browse(string $selected, string $browsed)
+    {
+        switch ($selected) {
+            case 'restaurant':
+                $model = Restaurant::where('name', 'LIKE', $browsed.'%')
+                         ->with('menus')
+                         ->with('reviews')
+                         ->get();
+                break;
+            case 'food':
+                $model = Menu::where('name', 'LIKE', $browsed.'%')
+                         ->with('restaurant')
+                         ->with('groupings')
+                         ->get();
+                break;
+            default:
+                break;
+        }
+
+        return $this->respond([
+            'status' => 'success',
+            'status_code' => $this->getStatusCode(),
+            'message' => 'Browsed '.$selected.' successful!',
+            'data' => $model
         ]);
     }
 }
